@@ -9,7 +9,7 @@ const TodoList = ({ todos, setTodos }: todoListPropsType) => {
   return (
     <div>
       {todos.map((t) => (
-        <SingleTodo todo={t} />
+        <SingleTodo todo={t} todos={todos} setTodos={setTodos} />
       ))}
     </div>
   )
