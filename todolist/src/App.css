@@ -10,7 +10,8 @@
   flex-direction: column;
   height: 100vh;
   background-color: rgb(179, 223, 255);
+  padding: 0rem 9rem;
 }
 .header {
-  font-size: 7rem;
+  font-size: 5rem;
 }
