@@ -1,7 +1,18 @@
 import React from "react"
-
-const todoList = () => {
-  return <div>todoList</div>
+import { Todo } from "../model"
+import SingleTodo from "./SingleTodo"
+interface todoListPropsType {
+  todos: Todo[]
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
+}
+const TodoList = ({ todos, setTodos }: todoListPropsType) => {
+  return (
+    <div>
+      {todos.map((t) => (
+        <SingleTodo todo={t} />
+      ))}
+    </div>
+  )
 }
 
-export default todoList
+export default TodoList

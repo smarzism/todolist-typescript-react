@@ -2,6 +2,7 @@ import "./App.css"
 import React, { useState } from "react"
 import InputField from "./components/InputField"
 import { Todo } from "./model"
+import TodoList from "./components/TodoList"
 const App: React.FC = () => {
   const [todo, setTodo] = useState<string>("")
   const [todos, setTodos] = useState<Todo[]>([])
@@ -14,9 +15,7 @@ const App: React.FC = () => {
     <div className="App">
       <span className="header">todo List</span>
       <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd} />
-      {todos.map((t) => (
-        <div>{t.todo}</div>
-      ))}
+      <TodoList todos={todos} setTodos={setTodos} />
     </div>
   )
 }
