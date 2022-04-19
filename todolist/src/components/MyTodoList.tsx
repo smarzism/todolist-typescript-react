@@ -1,17 +1,37 @@
 import React from "react"
-import { Action, Todo } from "../model"
+import { Action, TodoTypes } from "../model"
 import SingleTodo from "./SingleTodo"
+import "./styles.css"
 interface todoListPropsType {
-  todos: Todo[]
+  todos: TodoTypes
   dispatch: React.Dispatch<Action>
 }
 const TodoList = ({ todos, dispatch }: todoListPropsType) => {
-  console.log(todos)
   return (
-    <div>
-      {todos.map((t) => (
-        <SingleTodo todo={t} todos={todos} dispatch={dispatch} />
-      ))}
+    <div className="container">
+      <div className="todos">
+        <span className="todos__heading">Active Tasks</span>
+        {todos.uncompleted.map((t, i) => (
+          <SingleTodo
+            key={i}
+            todo={t}
+            todos={todos.completed}
+            dispatch={dispatch}
+          />
+        ))}
+      </div>
+
+      <div className="todos remove">
+        <span className="todos__heading">Completed Tasks</span>
+        {todos.completed.map((t, i) => (
+          <SingleTodo
+            key={i}
+            todo={t}
+            todos={todos.uncompleted}
+            dispatch={dispatch}
+          />
+        ))}
+      </div>
     </div>
   )
 }

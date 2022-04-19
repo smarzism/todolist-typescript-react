@@ -5,7 +5,10 @@ import { todoReducer } from "./model"
 import TodoList from "./components/MyTodoList"
 const App: React.FC = () => {
   const [todo, setTodo] = useState<string>("")
-  const [todosState, dispatch] = useReducer(todoReducer, [])
+  const [todosState, dispatch] = useReducer(todoReducer, {
+    completed: [],
+    uncompleted: [],
+  })
 
   return (
     <div className="App">

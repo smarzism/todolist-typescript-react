@@ -5,11 +5,11 @@ import { GrLinkNext } from "react-icons/gr"
 import { Action, Todo, todoReducer } from "../model"
 import "./styles.css"
 interface singleTodoPropsType {
+  key: number
   todo: Todo
   todos: Todo[]
   dispatch: React.Dispatch<Action>
 }
-
 const SingleTodo = ({ todo, dispatch }: singleTodoPropsType) => {
   const [editMode, setEditMode] = useState<boolean>(false)
   const [edit, setEdit] = useState<string>("")
@@ -26,7 +26,7 @@ const SingleTodo = ({ todo, dispatch }: singleTodoPropsType) => {
         <>
           <input
             ref={inputRef}
-            defaultValue={edit}
+            defaultValue={todo.todo}
             onChange={(e) => setEdit(e.target.value)}
             className="todos__single--text"
           ></input>
@@ -49,17 +49,22 @@ const SingleTodo = ({ todo, dispatch }: singleTodoPropsType) => {
           )}
           <div>
             <span className="icon">
-              <AiFillEdit onClick={() => setEditMode(true)} />
+              {!todo.isDone && <AiFillEdit onClick={() => setEditMode(true)} />}
               <AiFillDelete
-                onClick={() => dispatch({ type: "remove", payload: todo.id })}
+                onClick={() =>
+                  dispatch({
+                    type: `remove ${todo.isDone ? "completed" : "uncompleted"}`,
+                    payload: todo.id,
+                  })
+                }
               />
               {todo.isDone ? (
                 <AiOutlineUndo
-                  onClick={() => dispatch({ type: "undone", payload: todo.id })}
+                  onClick={() => dispatch({ type: "undone", payload: todo })}
                 />
               ) : (
                 <MdDone
-                  onClick={() => dispatch({ type: "done", payload: todo.id })}
+                  onClick={() => dispatch({ type: "done", payload: todo })}
                 />
               )}
             </span>
