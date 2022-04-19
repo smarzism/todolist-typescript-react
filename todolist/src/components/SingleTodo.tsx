@@ -4,7 +4,6 @@ import { MdDone } from "react-icons/md"
 import { GrLinkNext } from "react-icons/gr"
 import { Todo } from "../model"
 import "./styles.css"
-import { Draggable } from "react-beautiful-dnd"
 interface singleTodoPropsType {
   index: number
   todo: Todo
@@ -28,68 +27,57 @@ const SingleTodo = ({ index, todo, todos, setTodos }: singleTodoPropsType) => {
   }, [editMode])
 
   return (
-    <Draggable index={index} draggableId={todo.id.toString()}>
-      {(provided) => (
-        <form
-          className="todos__single"
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-        >
-          {editMode ? (
-            <>
-              <input
-                ref={inputRef}
-                defaultValue={edit}
-                onChange={(e) => setEdit(e.target.value)}
-                className="todos__single--text"
-              ></input>
+    <form className="todos__single">
+      {editMode ? (
+        <>
+          <input
+            ref={inputRef}
+            defaultValue={edit}
+            onChange={(e) => setEdit(e.target.value)}
+            className="todos__single--text"
+          ></input>
 
-              <GrLinkNext onClick={(e) => handleEdit(e, todo.id)} />
-            </>
+          <GrLinkNext onClick={(e) => handleEdit(e, todo.id)} />
+        </>
+      ) : (
+        <>
+          {todo.isDone ? (
+            <s className="todos__single--text"> {todo.todo}</s>
           ) : (
-            <>
-              {todo.isDone ? (
-                <s className="todos__single--text"> {todo.todo}</s>
-              ) : (
-                <span className="todos__single--text"> {todo.todo}</span>
-              )}
-              <div>
-                <span className="icon">
-                  <AiFillEdit onClick={() => setEditMode(true)} />
-                  <AiFillDelete
-                    onClick={() =>
-                      setTodos(todos.filter((t) => t.id !== todo.id))
-                    }
-                  />
-                  {todo.isDone ? (
-                    <AiOutlineUndo
-                      onClick={() =>
-                        setTodos(
-                          todos.map((t) =>
-                            t.id === todo.id ? { ...t, isDone: false } : t
-                          )
-                        )
-                      }
-                    />
-                  ) : (
-                    <MdDone
-                      onClick={() =>
-                        setTodos(
-                          todos.map((t) =>
-                            t.id === todo.id ? { ...t, isDone: true } : t
-                          )
-                        )
-                      }
-                    />
-                  )}
-                </span>
-              </div>
-            </>
+            <span className="todos__single--text"> {todo.todo}</span>
           )}
-        </form>
+          <div>
+            <span className="icon">
+              <AiFillEdit onClick={() => setEditMode(true)} />
+              <AiFillDelete
+                onClick={() => setTodos(todos.filter((t) => t.id !== todo.id))}
+              />
+              {todo.isDone ? (
+                <AiOutlineUndo
+                  onClick={() =>
+                    setTodos(
+                      todos.map((t) =>
+                        t.id === todo.id ? { ...t, isDone: false } : t
+                      )
+                    )
+                  }
+                />
+              ) : (
+                <MdDone
+                  onClick={() =>
+                    setTodos(
+                      todos.map((t) =>
+                        t.id === todo.id ? { ...t, isDone: true } : t
+                      )
+                    )
+                  }
+                />
+              )}
+            </span>
+          </div>
+        </>
       )}
-    </Draggable>
+    </form>
   )
 }
 
