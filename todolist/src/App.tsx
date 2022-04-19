@@ -12,19 +12,18 @@ const App: React.FC = () => {
     todo && setTodos([...todos, { id: Date.now(), todo: todo, isDone: false }])
     setTodo("")
   }
- 
 
   return (
-      <div className="App">
-        <span className="header">todo List</span>
-        <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd} />
-        <TodoList
-          todos={todos}
-          setTodos={setTodos}
-          completedTodos={completedTodos}
-          setCompletedTodos={setCompletedTodos}
-        />
-      </div>
+    <div className="App">
+      <span className="header">MY TODO LIST</span>
+      <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd} />
+      <TodoList
+        todos={todos}
+        setTodos={setTodos}
+        completedTodos={completedTodos}
+        setCompletedTodos={setCompletedTodos}
+      />
+    </div>
   )
 }
 

@@ -20,7 +20,14 @@ const TodoList = ({
       <div className="todos">
         <span className="todos__heading">Active Tasks</span>
         {todos.map((t, i) => (
-          <SingleTodo index={i} todo={t} todos={todos} setTodos={setTodos} />
+          <SingleTodo
+            key={i}
+            todo={t}
+            todos={todos}
+            setTodos={setTodos}
+            completedTodos={completedTodos}
+            setCompletedTodos={setCompletedTodos}
+          />
         ))}
       </div>
 
@@ -28,10 +35,12 @@ const TodoList = ({
         <span className="todos__heading">Completed Tasks</span>
         {completedTodos.map((t, i) => (
           <SingleTodo
-            index={i}
+            key={i}
             todo={t}
-            todos={completedTodos}
-            setTodos={setCompletedTodos}
+            todos={todos}
+            setTodos={setTodos}
+            completedTodos={completedTodos}
+            setCompletedTodos={setCompletedTodos}
           />
         ))}
       </div>

@@ -5,13 +5,22 @@ import { GrLinkNext } from "react-icons/gr"
 import { Todo } from "../model"
 import "./styles.css"
 interface singleTodoPropsType {
-  index: number
+  key: number
   todo: Todo
   todos: Todo[]
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
+  completedTodos: Todo[]
+  setCompletedTodos: React.Dispatch<React.SetStateAction<Todo[]>>
 }
 
-const SingleTodo = ({ index, todo, todos, setTodos }: singleTodoPropsType) => {
+const SingleTodo = ({
+  key,
+  todo,
+  todos,
+  setTodos,
+  completedTodos,
+  setCompletedTodos,
+}: singleTodoPropsType) => {
   const [editMode, setEditMode] = useState<boolean>(false)
   const [edit, setEdit] = useState<string>("")
 
@@ -32,12 +41,13 @@ const SingleTodo = ({ index, todo, todos, setTodos }: singleTodoPropsType) => {
         <>
           <input
             ref={inputRef}
-            defaultValue={edit}
+            defaultValue={todo.todo}
             onChange={(e) => setEdit(e.target.value)}
             className="todos__single--text"
           ></input>
-
-          <GrLinkNext onClick={(e) => handleEdit(e, todo.id)} />
+          <span className="icon">
+            <GrLinkNext onClick={(e) => handleEdit(e, todo.id)} />
+          </span>
         </>
       ) : (
         <>
@@ -54,23 +64,25 @@ const SingleTodo = ({ index, todo, todos, setTodos }: singleTodoPropsType) => {
               />
               {todo.isDone ? (
                 <AiOutlineUndo
-                  onClick={() =>
-                    setTodos(
-                      todos.map((t) =>
-                        t.id === todo.id ? { ...t, isDone: false } : t
-                      )
+                  onClick={() => {
+                    setCompletedTodos(
+                      completedTodos.filter((t) => t.id !== todo.id)
                     )
-                  }
+                    setTodos([
+                      ...todos,
+                      { id: todo.id, todo: todo.todo, isDone: false },
+                    ])
+                  }}
                 />
               ) : (
                 <MdDone
-                  onClick={() =>
-                    setTodos(
-                      todos.map((t) =>
-                        t.id === todo.id ? { ...t, isDone: true } : t
-                      )
-                    )
-                  }
+                  onClick={() => {
+                    setTodos(todos.filter((t) => t.id !== todo.id))
+                    setCompletedTodos([
+                      ...completedTodos,
+                      { id: todo.id, todo: todo.todo, isDone: true },
+                    ])
+                  }}
                 />
               )}
             </span>
