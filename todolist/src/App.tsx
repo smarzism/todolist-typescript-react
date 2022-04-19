@@ -2,7 +2,7 @@ import "./App.css"
 import React, { useReducer, useState } from "react"
 import InputField from "./components/InputField"
 import { todoReducer } from "./model"
-import TodoList from "./components/TodoList"
+import TodoList from "./components/MyTodoList"
 const App: React.FC = () => {
   const [todo, setTodo] = useState<string>("")
   const [todosState, dispatch] = useReducer(todoReducer, [])
