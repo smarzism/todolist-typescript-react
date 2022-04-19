@@ -1,10 +1,12 @@
+import { Action } from "../model"
 import "./styles.css"
+
 interface inputPropsType {
   todo: string
   setTodo: React.Dispatch<React.SetStateAction<string>>
-  handleAdd: (e: React.FormEvent) => void
+  dispatch: React.Dispatch<Action>
 }
-const InputField = ({ todo, setTodo, handleAdd }: inputPropsType) => {
+const InputField = ({ todo, setTodo, dispatch }: inputPropsType) => {
   return (
     <form action="" className="input">
       <input
@@ -17,8 +19,12 @@ const InputField = ({ todo, setTodo, handleAdd }: inputPropsType) => {
       <button
         type="submit"
         className="input_submit"
-        onClick={handleAdd}
-        onKeyPress={(e) => e.key === "Enter" && handleAdd}
+        onClick={(e) => {
+          e.preventDefault()
+          todo && dispatch({ type: "add", payload: todo })
+          setTodo("")
+        }}
+        // onKeyPress={(e) => e.key === "Enter" && handleAdd}
       >
         Add
       </button>

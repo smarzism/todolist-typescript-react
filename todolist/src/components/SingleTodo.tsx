@@ -1,31 +1,21 @@
-import React, { useState, useRef, useEffect, useReducer } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import { AiFillEdit, AiFillDelete, AiOutlineUndo } from "react-icons/ai"
 import { MdDone } from "react-icons/md"
 import { GrLinkNext } from "react-icons/gr"
-import { Todo } from "../model"
+import { Action, Todo, todoReducer } from "../model"
 import "./styles.css"
 interface singleTodoPropsType {
   todo: Todo
   todos: Todo[]
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
+  dispatch: React.Dispatch<Action>
 }
 
-const SingleTodo = ({ todo, todos, setTodos }: singleTodoPropsType) => {
+const SingleTodo = ({ todo, dispatch }: singleTodoPropsType) => {
   const [editMode, setEditMode] = useState<boolean>(false)
   const [edit, setEdit] = useState<string>("")
 
   const inputRef = useRef<HTMLInputElement>(null)
 
-  // const [state, dispatch] = useReducer<React.ReducerWithoutAction>(
-  //   todoReducer,
-  //   todos
-  // )
-
-  const handleEdit = (e: React.FormEvent, id: number) => {
-    e.preventDefault()
-    edit && setTodos(todos.map((t) => (t.id === id ? { ...t, todo: edit } : t)))
-    setEditMode(false)
-  }
   useEffect(() => {
     inputRef.current?.focus()
   }, [editMode])
@@ -41,7 +31,14 @@ const SingleTodo = ({ todo, todos, setTodos }: singleTodoPropsType) => {
             className="todos__single--text"
           ></input>
 
-          <GrLinkNext onClick={(e) => handleEdit(e, todo.id)} />
+          <GrLinkNext
+            onClick={(e) => {
+              e.preventDefault()
+              edit &&
+                dispatch({ type: "edit", payload: { id: todo.id, todo: edit } })
+              setEditMode(false)
+            }}
+          />
         </>
       ) : (
         <>
@@ -54,27 +51,15 @@ const SingleTodo = ({ todo, todos, setTodos }: singleTodoPropsType) => {
             <span className="icon">
               <AiFillEdit onClick={() => setEditMode(true)} />
               <AiFillDelete
-                onClick={() => setTodos(todos.filter((t) => t.id !== todo.id))}
+                onClick={() => dispatch({ type: "remove", payload: todo.id })}
               />
               {todo.isDone ? (
                 <AiOutlineUndo
-                  onClick={() =>
-                    setTodos(
-                      todos.map((t) =>
-                        t.id === todo.id ? { ...t, isDone: false } : t
-                      )
-                    )
-                  }
+                  onClick={() => dispatch({ type: "undone", payload: todo.id })}
                 />
               ) : (
                 <MdDone
-                  onClick={() =>
-                    setTodos(
-                      todos.map((t) =>
-                        t.id === todo.id ? { ...t, isDone: true } : t
-                      )
-                    )
-                  }
+                  onClick={() => dispatch({ type: "done", payload: todo.id })}
                 />
               )}
             </span>

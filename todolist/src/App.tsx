@@ -1,21 +1,17 @@
 import "./App.css"
-import React, { useState } from "react"
+import React, { useReducer, useState } from "react"
 import InputField from "./components/InputField"
-import { Todo } from "./model"
+import { todoReducer } from "./model"
 import TodoList from "./components/TodoList"
 const App: React.FC = () => {
   const [todo, setTodo] = useState<string>("")
-  const [todos, setTodos] = useState<Todo[]>([])
-  const handleAdd = (e: React.FormEvent) => {
-    e.preventDefault()
-    todo && setTodos([...todos, { id: Date.now(), todo: todo, isDone: false }])
-    setTodo("")
-  }
+  const [todosState, dispatch] = useReducer(todoReducer, [])
+
   return (
     <div className="App">
       <span className="header">todo List</span>
-      <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd} />
-      <TodoList todos={todos} setTodos={setTodos} />
+      <InputField todo={todo} setTodo={setTodo} dispatch={dispatch} />
+      <TodoList todos={todosState} dispatch={dispatch} />
     </div>
   )
 }
