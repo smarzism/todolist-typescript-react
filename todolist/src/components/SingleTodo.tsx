@@ -58,9 +58,15 @@ const SingleTodo = ({
           )}
           <div>
             <span className="icon">
-              <AiFillEdit onClick={() => setEditMode(true)} />
+              {!todo.isDone && <AiFillEdit onClick={() => setEditMode(true)} />}
               <AiFillDelete
-                onClick={() => setTodos(todos.filter((t) => t.id !== todo.id))}
+                onClick={() => {
+                  todo.isDone
+                    ? setCompletedTodos(
+                        completedTodos.filter((t) => t.id !== todo.id)
+                      )
+                    : setTodos(todos.filter((t) => t.id !== todo.id))
+                }}
               />
               {todo.isDone ? (
                 <AiOutlineUndo
