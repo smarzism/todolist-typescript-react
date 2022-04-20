@@ -47,19 +47,22 @@ export function todoReducer(todosState: TodoTypes, action: Action): TodoTypes {
       }
 
     case "done":
-      todosState.completed.push({ ...action.payload, isDone: true })
-
       return {
-        completed: todosState.completed,
+        completed: [
+          ...todosState.completed,
+          { ...action.payload, isDone: true },
+        ],
         uncompleted: todosState.uncompleted.filter(
           (t) => t.id !== action.payload.id
         ),
       }
 
     case "undone":
-      todosState.uncompleted.push({ ...action.payload, isDone: false })
       return {
-        uncompleted: todosState.uncompleted,
+        uncompleted: [
+          ...todosState.uncompleted,
+          { ...action.payload, isDone: false },
+        ],
         completed: todosState.completed.filter(
           (t) => t.id !== action.payload.id
         ),
